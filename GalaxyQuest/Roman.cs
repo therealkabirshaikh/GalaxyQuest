@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GalaxyQuest
 {
@@ -7,7 +8,7 @@ namespace GalaxyQuest
     {
         private static readonly Dictionary<char, int> RomanNumberDictionary;
         private static readonly Dictionary<int, string> NumberRomanDictionary;
-        
+
         static Roman()
         {
             RomanNumberDictionary = new Dictionary<char, int>
@@ -55,11 +56,16 @@ namespace GalaxyQuest
             return romanNumeral.ToString();
         }
 
-        public static int From(string roman)
+        public static decimal From(string roman)
         {
-            int total = 0;
+            var pattern = @"^(?=[MDCLXVI])M*(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$";
+            var regex = new Regex(pattern);
+            if (!regex.IsMatch(roman))
+                return -1;
 
-            int current, previous = 0;
+            decimal total = 0;
+
+            decimal current, previous = 0;
             char currentRoman, previousRoman = '\0';
 
             for (int i = 0; i < roman.Length; i++)

@@ -93,5 +93,12 @@ namespace GalaxyQuest.Test
         {
             Assert.Equal(11984, Roman.From("MMMMMMMMMMMCMLXXXIV"));
         }
+
+        [Fact]
+        public void Roman_IVL_IsInvalid()
+        {
+            Assert.Equal(-1, Roman.From("IVL"));
+        }
+
     }
 }
