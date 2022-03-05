@@ -29,7 +29,7 @@ namespace GalaxyQuest
 
         public static decimal GetCommodityValue(string commodityName)
         {
-            commodityPriceMap.TryGetValue(commodityName, out decimal value);
+            commodityPriceMap.TryGetValue(commodityName, out var value);
             return value;
         }
     }
