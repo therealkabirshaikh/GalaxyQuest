@@ -1,19 +1,27 @@
-﻿using System;
+﻿using GalaxyQuest.Interfaces;
 
 namespace GalaxyQuest
 {
-    public class NoteTaker
+    public class NoteTaker : INoteTaker
     {
-        private ICurrencyConverter _currencyConverter = new GalaxyQuestCurrencyConverter();
-        private readonly INumberMapper _numberMapper = new NumberMapper(); //TODO: Inject this
-       
+        private readonly ICurrencyConverter _currencyConverter;
+        private readonly INumberMapper _numberMapper;
+        private readonly IMessageWriter _messageWriter;
+
+        public NoteTaker(ICurrencyConverter currencyConverter, INumberMapper numberMapper, IMessageWriter messageWriter)
+        {
+            _currencyConverter = currencyConverter;
+            _numberMapper = numberMapper;
+            _messageWriter = messageWriter;
+        }
+
         public void GalaxyQuestNotes()
         {
-            var userInput = string.Empty;
-            Console.WriteLine("Enter notes...");
+            _messageWriter.WriteMessage("Enter notes...");
+            
             while (true)
             {
-                userInput = Console.ReadLine();
+                var userInput = Console.ReadLine();
                 if (userInput.Equals("exit", StringComparison.OrdinalIgnoreCase))
                     Environment.Exit(0);
 
@@ -30,14 +38,14 @@ namespace GalaxyQuest
                     var userInputArray = userInput.Split(" is ");
                     if (userInputArray[0].Equals("how much", StringComparison.OrdinalIgnoreCase))
                     {
-                        var arabicNumber = GalaxyQuestCurrencyConverter.CalculateArabicValue(userInputArray[1]);
+                        var arabicNumber = _currencyConverter.CalculateArabicValue(userInputArray[1]);
                         if (arabicNumber.Message != string.Empty)
                         {
-                            Console.WriteLine(arabicNumber.Message);
+                            _messageWriter.WriteMessage(arabicNumber.Message);
                         }
                         else
                         {
-                            Console.WriteLine(arabicNumber.Number >= 0
+                            _messageWriter.WriteMessage(arabicNumber.Number >= 0
                                 ? $"{userInputArray[1]} is {arabicNumber.Number}"
                                 : $"{userInputArray[1]} is an invalid value");
                         }
@@ -45,7 +53,7 @@ namespace GalaxyQuest
                     else if (userInputArray[0].StartsWith("how many", StringComparison.OrdinalIgnoreCase))
                     {
                         var commodity = _currencyConverter.GetCommodityValue(userInputArray);
-                        Console.WriteLine(commodity.Number >= 0
+                        _messageWriter.WriteMessage(commodity.Number >= 0
                             ? $"{userInputArray[1]} is {commodity.Number} Credits"
                             : $"{userInputArray[1]} is an invalid value");
                     }
@@ -63,7 +71,7 @@ namespace GalaxyQuest
                 }
                 else
                 {
-                    Console.WriteLine("I have no idea what you are talking about");
+                    _messageWriter.WriteMessage("I have no idea what you are talking about");
                 }
             }
         }

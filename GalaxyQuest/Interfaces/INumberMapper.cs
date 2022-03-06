@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GalaxyQuest
+﻿namespace GalaxyQuest.Interfaces
 {
     public interface INumberMapper
     {

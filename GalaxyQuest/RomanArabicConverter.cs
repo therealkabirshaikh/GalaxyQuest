@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
 
 namespace GalaxyQuest
@@ -57,7 +56,7 @@ namespace GalaxyQuest
 
         public static decimal ToArabicNumber(string roman)
         {
-            var pattern = @"^(?=[MDCLXVI])M*(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$";
+            const string pattern = @"^(?=[MDCLXVI])M*(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$";
             var regex = new Regex(pattern);
             if (!regex.IsMatch(roman))
                 return -1;
@@ -67,9 +66,9 @@ namespace GalaxyQuest
             decimal current, previous = 0;
             char currentRoman, previousRoman = '\0';
 
-            for (var i = 0; i < roman.Length; i++)
+            foreach (var rCharacter in roman)
             {
-                currentRoman = roman[i];
+                currentRoman = rCharacter;
 
                 previous = previousRoman != '\0' ? RomanNumberDictionary[previousRoman] : '\0';
                 current = RomanNumberDictionary[currentRoman];

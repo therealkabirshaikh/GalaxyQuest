@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using GalaxyQuest.Interfaces;
 
 namespace GalaxyQuest
 {

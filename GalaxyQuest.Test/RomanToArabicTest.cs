@@ -25,7 +25,7 @@ namespace GalaxyQuest.Test
         }
 
         [Fact]
-        public void ToArabicNumber_InvalidValue_ReturnsCorrectNumber()
+        public void ToArabicNumber_InvalidValue_ReturnsNegativeOne()
         {
             Assert.Equal(-1, RomanArabicConverter.ToArabicNumber("IVL"));
         }

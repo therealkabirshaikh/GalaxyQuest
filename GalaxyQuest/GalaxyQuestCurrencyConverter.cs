@@ -1,27 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using GalaxyQuest.Interfaces;
 using GalaxyQuest.Models;
 
 namespace GalaxyQuest
 {
     public class GalaxyQuestCurrencyConverter : ICurrencyConverter
     {
-        private readonly INumberMapper _numberMapper = new NumberMapper(); //TODO: Inject this
-        
-        public static ReturnDTO CalculateArabicValue(string input)
+        private readonly INumberMapper _numberMapper;
+        private readonly IMessageWriter _messageWriter;
+
+        public GalaxyQuestCurrencyConverter(INumberMapper numberMapper, IMessageWriter messageWriter)
+        {
+            _numberMapper = numberMapper;
+            _messageWriter = messageWriter;
+        }
+
+        public ReturnDTO CalculateArabicValue(string input)
         {
             var localRoman = string.Empty;
             var message = string.Empty;
             var galacticNames = input.Split(' ');
-            
+
             foreach (var name in galacticNames)
             {
                 if (name.Equals(string.Empty))
                     continue;
 
-                var numberMapper = new NumberMapper();
-                Dictionary<string, string> map = numberMapper.GetMap();
+                var map = _numberMapper.GetMap();
 
                 if (map.TryGetValue(name, out _))
                     localRoman += map[name];
@@ -43,12 +47,12 @@ namespace GalaxyQuest
             var galacticValueAndCommodity = inputArray[1].Split(' ');
             var commodity = galacticValueAndCommodity.TakeLast(1).First();
             Array.Resize(ref galacticValueAndCommodity, galacticValueAndCommodity.Length - 1);
-            
+
             foreach (var name in galacticValueAndCommodity)
             {
                 if (name.Equals(string.Empty))
                     continue;
-                
+
                 var map = _numberMapper.GetMap();
                 if (map.TryGetValue(name, out _))
                     localRoman += map[name];
@@ -86,7 +90,7 @@ namespace GalaxyQuest
                             totalValue);
                     else
                     {
-                        Console.WriteLine("I have no idea what you are talking about");
+                        _messageWriter.WriteMessage("I have no idea what you are talking about");
                     }
                 }
             }
