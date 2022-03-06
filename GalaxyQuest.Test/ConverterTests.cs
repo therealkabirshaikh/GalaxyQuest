@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GalaxyQuest.Converters;
 using GalaxyQuest.Interfaces;
 using NSubstitute;
 using Xunit;

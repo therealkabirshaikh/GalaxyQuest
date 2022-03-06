@@ -1,7 +1,7 @@
 ﻿using GalaxyQuest.Interfaces;
 using GalaxyQuest.Models;
 
-namespace GalaxyQuest
+namespace GalaxyQuest.Converters
 {
     public class InterGalacticCurrencyConverter : ICurrencyConverter
     {

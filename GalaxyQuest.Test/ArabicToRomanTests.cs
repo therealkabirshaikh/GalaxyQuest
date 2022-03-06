@@ -1,4 +1,5 @@
 ﻿using System;
+using GalaxyQuest.Converters;
 using Xunit;
 
 namespace GalaxyQuest.Test
