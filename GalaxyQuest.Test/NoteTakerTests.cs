@@ -7,7 +7,7 @@ namespace GalaxyQuest.Test;
 
 public class NoteTakerTests
 {
-    private INoteTaker _sut;
+    private readonly INoteTaker _sut;
     private readonly ICurrencyConverter _currencyConverter;
     private readonly IMessageWriter _messageWriter;
     private readonly INumberMapper _numberMapper;
@@ -97,6 +97,22 @@ public class NoteTakerTests
         const string input = "how much is pish tegj glob glob";
         _currencyConverter.CalculateArabicValue(Arg.Any<string>())
             .Returns(new ReturnDTO { Number = 10, Message = "Invalid value..." });
+
+        //Act
+        _sut.ProcessUserInput(input);
+
+        //Assert
+        _currencyConverter.Received().CalculateArabicValue(Arg.Any<string>());
+        _messageWriter.Received().WriteMessage(Arg.Any<string>());
+    }
+    
+    [Fact]
+    public void GetUserInput_WithValidInput_CallsCalculateArabicValue()
+    {
+        //Arrange
+        const string input = "how much is pish tegj glob glob";
+        _currencyConverter.CalculateArabicValue(Arg.Any<string>())
+            .Returns(new ReturnDTO {Number = 10, Message = string.Empty});
 
         //Act
         _sut.ProcessUserInput(input);

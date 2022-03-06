@@ -28,26 +28,10 @@ namespace GalaxyQuest
                     Terminate = true;
                     continue;
                 }
-                var userInput = GetUserInput(input);
+                var userInput = UserInputValidator.GetUserInput(input);
                 ProcessUserInput(userInput);
             }
             Environment.Exit(0);
-        }
-
-        private static string? GetUserInput(string? userInput)
-        {
-            if (userInput == null) 
-                return userInput;
-            
-            var startIndex = userInput.LastIndexOf('?');
-            if (startIndex != -1)
-            {
-                userInput = userInput.Remove(startIndex);
-            }
-            
-            userInput = userInput.Trim();
-
-            return userInput;
         }
 
         public void ProcessUserInput(string? userInput)
