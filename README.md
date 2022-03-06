@@ -2,7 +2,7 @@
 
 ## Overview
 
-This application translates intergalactic numbering systems based on Roman numerals.
+This application translates intergalactic numbering systems based on Roman numerals and calculates prices for various commodities.
 
 ## Get Started
 This application is built on .Net 6, so install it if necessary (link below).
