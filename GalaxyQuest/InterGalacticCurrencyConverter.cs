@@ -3,12 +3,12 @@ using GalaxyQuest.Models;
 
 namespace GalaxyQuest
 {
-    public class GalaxyQuestCurrencyConverter : ICurrencyConverter
+    public class InterGalacticCurrencyConverter : ICurrencyConverter
     {
         private readonly INumberMapper _numberMapper;
         private readonly IMessageWriter _messageWriter;
 
-        public GalaxyQuestCurrencyConverter(INumberMapper numberMapper, IMessageWriter messageWriter)
+        public InterGalacticCurrencyConverter(INumberMapper numberMapper, IMessageWriter messageWriter)
         {
             _numberMapper = numberMapper;
             _messageWriter = messageWriter;
@@ -40,7 +40,7 @@ namespace GalaxyQuest
             return new ReturnDTO {Message = message, Number = convertedValue};
         }
 
-        public ReturnDTO GetCommodityPrice(string inputArray)
+        public ReturnDTO GetCommodityData(string inputArray)
         {
             var localRoman = string.Empty;
             var message = string.Empty;
