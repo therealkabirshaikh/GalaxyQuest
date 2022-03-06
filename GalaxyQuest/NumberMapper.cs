@@ -9,6 +9,10 @@ namespace GalaxyQuest
 
         public void Map(string galactic, string roman)
         {
+            if (RomanToInterGalacticMap.ContainsKey(galactic))
+            {
+                RomanToInterGalacticMap.Remove(galactic);
+            }
             RomanToInterGalacticMap.Add(galactic, roman.ToUpper());
         }
 
@@ -17,18 +21,18 @@ namespace GalaxyQuest
             return RomanToInterGalacticMap;
         }
 
-        public void SetCommodityPrice(decimal arabicValue, string galactic, decimal totalValue)
+        public void SetCommodityPrice(string commodity, decimal arabicValue, decimal totalValue)
         {
             var commodityPrice = totalValue / arabicValue;
-            if (CommodityPriceMap.ContainsKey(galactic))
+            if (CommodityPriceMap.ContainsKey(commodity))
             {
-                CommodityPriceMap.Remove(galactic);
+                CommodityPriceMap.Remove(commodity);
             }
 
-            CommodityPriceMap.Add(galactic, commodityPrice);
+            CommodityPriceMap.Add(commodity, commodityPrice);
         }
 
-        public decimal GetCommodityValue(string commodityName)
+        public decimal GetCommodityPrice(string commodityName)
         {
             CommodityPriceMap.TryGetValue(commodityName, out var value);
             return value;

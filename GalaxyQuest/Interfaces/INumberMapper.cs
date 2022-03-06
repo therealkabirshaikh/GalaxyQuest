@@ -4,7 +4,7 @@
     {
         void Map(string galactic, string roman);
         Dictionary<string, string> GetMap();
-        void SetCommodityPrice(decimal arabicValue, string galactic, decimal totalValue);
-        decimal GetCommodityValue(string commodityName);
+        void SetCommodityPrice(string commodity, decimal arabicValue, decimal totalValue);
+        decimal GetCommodityPrice(string commodityName);
     }
 }

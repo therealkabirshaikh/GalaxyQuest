@@ -52,7 +52,7 @@ namespace GalaxyQuest
                     }
                     else if (userInputArray[0].StartsWith("how many", StringComparison.OrdinalIgnoreCase))
                     {
-                        var commodity = _currencyConverter.GetCommodityValue(userInputArray);
+                        var commodity = _currencyConverter.GetCommodityPrice(userInputArray[1]);
                         _messageWriter.WriteMessage(commodity.Number >= 0
                             ? $"{userInputArray[1]} is {commodity.Number} Credits"
                             : $"{userInputArray[1]} is an invalid value");

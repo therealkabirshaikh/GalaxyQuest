@@ -58,5 +58,28 @@ namespace GalaxyQuest.Test
             //Assert
             Assert.Equal("I have no idea what you are talking about", dto.Message);
         }
+
+        [Fact]
+        public void GetCommodityValue_GivenValidInput_ReturnsCorrectValue()
+        {
+            //Arrange
+            const string input = "pish pish iron";
+            var map = new Dictionary<string, string>
+            {
+                {"pish", "X"},
+                {"tegj", "L"},
+                {"glob", "I"},
+                {"prok", "V"}
+            };
+            _numberMapper.GetMap().Returns(map);
+            _numberMapper.SetCommodityPrice("iron", 10, 20);
+            _numberMapper.GetCommodityPrice("iron").Returns(10);
+
+            //Act
+            var dto = _sut.GetCommodityPrice(input);
+
+            //Assert
+            Assert.Equal(200, dto.Number);
+        }
     }
 }

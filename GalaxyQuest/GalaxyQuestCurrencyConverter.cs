@@ -40,11 +40,11 @@ namespace GalaxyQuest
             return new ReturnDTO {Message = message, Number = convertedValue};
         }
 
-        public ReturnDTO GetCommodityValue(IReadOnlyList<string> inputArray)
+        public ReturnDTO GetCommodityPrice(string inputArray)
         {
             var localRoman = string.Empty;
             var message = string.Empty;
-            var galacticValueAndCommodity = inputArray[1].Split(' ');
+            var galacticValueAndCommodity = inputArray.Split(' ');
             var commodity = galacticValueAndCommodity.TakeLast(1).First();
             Array.Resize(ref galacticValueAndCommodity, galacticValueAndCommodity.Length - 1);
 
@@ -62,9 +62,9 @@ namespace GalaxyQuest
                 }
             }
 
-            var convertedValue = RomanArabicConverter.ToArabicNumber(localRoman);
-            var commodityValue = _numberMapper.GetCommodityValue(commodity);
-            var totalValue = commodityValue * convertedValue;
+            var commodityQuantity = RomanArabicConverter.ToArabicNumber(localRoman);
+            var commodityValue = _numberMapper.GetCommodityPrice(commodity);
+            var totalValue = commodityValue * commodityQuantity;
 
             return new ReturnDTO {Number = totalValue, Message = message};
         }
@@ -86,19 +86,13 @@ namespace GalaxyQuest
                     var convertedValue = RomanArabicConverter.ToArabicNumber(localRoman);
                     var credits = numberOfCredits[0];
                     if (decimal.TryParse(credits, out var totalValue))
-                        SetCommodityPrice(convertedValue, galacticNames.Last(),
-                            totalValue);
+                        _numberMapper.SetCommodityPrice(galacticNames.Last(),convertedValue, totalValue);
                     else
                     {
                         _messageWriter.WriteMessage("I have no idea what you are talking about");
                     }
                 }
             }
-        }
-
-        private void SetCommodityPrice(decimal convertedValue, string g, decimal totalValue)
-        {
-            _numberMapper.SetCommodityPrice(convertedValue, g, totalValue);
         }
     }
 }
