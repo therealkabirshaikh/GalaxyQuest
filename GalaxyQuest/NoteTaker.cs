@@ -44,23 +44,14 @@ namespace GalaxyQuest
                 if (questionText.Equals("how much", StringComparison.OrdinalIgnoreCase))
                 {
                     var commodityObject = _currencyConverter.CalculateArabicValue(commodityData);
-                    if (commodityObject.Message != string.Empty)
-                    {
-                        _messageWriter.WriteMessage(commodityObject.Message);
-                    }
-                    else
-                    {
-                        _messageWriter.WriteMessage(commodityObject.Number >= 0
-                            ? $"{commodityData} is {commodityObject.Number}"
-                            : $"{commodityData} is an invalid value");
-                    }
+                    _messageWriter.WriteMessage(commodityObject.Message != string.Empty
+                        ? commodityObject.Message
+                        : $"{commodityData} is {commodityObject.Number}");
                 }
                 else if (questionText.StartsWith("how many", StringComparison.OrdinalIgnoreCase))
                 {
                     var commodity = _currencyConverter.GetCommodityData(commodityData);
-                    _messageWriter.WriteMessage(commodity.Number >= 0
-                        ? $"{commodityData} is {commodity.Number} Credits"
-                        : $"{commodityData} is an invalid value");
+                    _messageWriter.WriteMessage($"{commodityData} is {commodity.Number} Credits");
                 }
                 else
                 {
@@ -70,7 +61,7 @@ namespace GalaxyQuest
                     }
                     else
                     {
-                        _numberMapper.Map(questionText, commodityData);
+                        _numberMapper.MapGalacticToRoman(questionText, commodityData);
                     }
                 }
             }

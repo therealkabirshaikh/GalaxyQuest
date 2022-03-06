@@ -42,32 +42,32 @@ public class NumberMapperTests
     }
 
     [Fact]
-    public void Map_WhenCalled_AddsExpectedValueToPrivateDataStore()
+    public void MapGalacticToRoman_WhenCalled_AddsExpectedValueToPrivateDataStore()
     {
         //Arrange
         const string galactic = "glob";
         const string roman = "I";
 
         //Act
-        _sut.Map(galactic, roman);
-        var map = _sut.GetMap();
+        _sut.MapGalacticToRoman(galactic, roman);
+        var map = _sut.GetGalacticToRomanMap();
         var value = map["glob"];
 
         //Assert
-        Assert.Equal("I", value);
+        Assert.Equal(roman, value);
     }
     
     [Fact]
-    public void Map_WhenSentDuplicateValue_ReplacesExistingValue()
+    public void MapGalacticToRoman_WhenSentDuplicateValue_ReplacesExistingValue()
     {
         //Arrange
         const string galactic = "glob";
         const string roman = "I";
 
         //Act
-        _sut.Map(galactic, roman);
-        _sut.Map(galactic, "X");
-        var map = _sut.GetMap();
+        _sut.MapGalacticToRoman(galactic, roman);
+        _sut.MapGalacticToRoman(galactic, "X");
+        var map = _sut.GetGalacticToRomanMap();
         var value = map["glob"];
 
         //Assert

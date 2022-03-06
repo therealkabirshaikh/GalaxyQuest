@@ -30,7 +30,7 @@ public class NoteTakerTests
         _sut.ProcessUserInput(input);
 
         //Assert
-        _numberMapper.Received().Map(Arg.Any<string>(), Arg.Any<string>());
+        _numberMapper.Received().MapGalacticToRoman(Arg.Any<string>(), Arg.Any<string>());
     }
 
     [Theory]

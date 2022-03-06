@@ -25,7 +25,7 @@ namespace GalaxyQuest.Converters
                 if (name.Equals(string.Empty))
                     continue;
 
-                var map = _numberMapper.GetMap();
+                var map = _numberMapper.GetGalacticToRomanMap();
 
                 if (map.TryGetValue(name, out _))
                     localRoman += map[name];
@@ -53,7 +53,7 @@ namespace GalaxyQuest.Converters
                 if (name.Equals(string.Empty))
                     continue;
 
-                var map = _numberMapper.GetMap();
+                var map = _numberMapper.GetGalacticToRomanMap();
                 if (map.TryGetValue(name, out _))
                     localRoman += map[name];
                 else
@@ -76,7 +76,7 @@ namespace GalaxyQuest.Converters
             var galacticNames = galacticRoman[0].Split(' ');
             foreach (var name in galacticNames)
             {
-                Dictionary<string, string> map = _numberMapper.GetMap();
+                Dictionary<string, string> map = _numberMapper.GetGalacticToRomanMap();
                 if (map.ContainsKey(name))
                 {
                     localRoman += map[name];

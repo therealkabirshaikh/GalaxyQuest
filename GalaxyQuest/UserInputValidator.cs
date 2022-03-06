@@ -13,7 +13,7 @@ public static class UserInputValidator
             userInput = userInput.Remove(startIndex);
         }
             
-        userInput = userInput.Trim();
+        userInput = userInput.Trim().ToLower();
 
         return userInput;
     }

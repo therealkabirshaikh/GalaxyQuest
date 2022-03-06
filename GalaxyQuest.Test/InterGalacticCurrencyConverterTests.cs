@@ -7,13 +7,13 @@ using Xunit;
 
 namespace GalaxyQuest.Test
 {
-    public class ConverterTests
+    public class InterGalacticCurrencyConverterTests
     {
         private readonly InterGalacticCurrencyConverter _sut;
         private readonly INumberMapper _numberMapper;
         private readonly IMessageWriter _messageWriter;
 
-        public ConverterTests()
+        public InterGalacticCurrencyConverterTests()
         {
             _numberMapper = Substitute.For<INumberMapper>();
             _messageWriter = Substitute.For<IMessageWriter>();
@@ -31,7 +31,7 @@ namespace GalaxyQuest.Test
                 {"tegj", "L"},
                 {"glob", "I"},
             };
-            _numberMapper.GetMap().Returns(map);
+            _numberMapper.GetGalacticToRomanMap().Returns(map);
 
             //Act
             var dto = _sut.CalculateArabicValue(input);
@@ -52,7 +52,7 @@ namespace GalaxyQuest.Test
                 {"tegj", "L"},
                 {"glob", "I"},
             };
-            _numberMapper.GetMap().Returns(map);
+            _numberMapper.GetGalacticToRomanMap().Returns(map);
 
             //Act
             var dto = _sut.CalculateArabicValue(input);
@@ -62,7 +62,7 @@ namespace GalaxyQuest.Test
         }
 
         [Fact]
-        public void GetCommodityValue_GivenValidInput_ReturnsCorrectValue()
+        public void GetCommodityData_GivenValidInput_ReturnsCorrectValue()
         {
             //Arrange
             const string input = "pish pish iron";
@@ -73,8 +73,8 @@ namespace GalaxyQuest.Test
                 {"glob", "I"},
                 {"prok", "V"}
             };
-            _numberMapper.GetMap().Returns(map);
-            _numberMapper.SetCommodityPrice("iron", 10, 20);
+            _numberMapper.GetGalacticToRomanMap().Returns(map);
+            _numberMapper.SetCommodityPrice("iron", 10, 30);
             _numberMapper.GetCommodityPrice("iron").Returns(10);
 
             //Act
@@ -85,20 +85,11 @@ namespace GalaxyQuest.Test
         }
 
         [Fact]
-        public void GetCommodityValue_GivenInvalidInput_ReturnsErrorMessage()
+        public void GetCommodityData_GivenInvalidInput_ReturnsErrorMessage()
         {
             //Arrange
             const string input = "pish posh iron";
-            var map = new Dictionary<string, string>
-            {
-                {"pish", "X"},
-                {"tegj", "L"},
-                {"glob", "I"},
-                {"prok", "V"}
-            };
-            _numberMapper.GetMap().Returns(map);
-            _numberMapper.SetCommodityPrice("iron", 10, 20);
-            _numberMapper.GetCommodityPrice("iron").Returns(10);
+            _numberMapper.GetGalacticToRomanMap().Returns(new Dictionary<string, string>());
 
             //Act
             var dto = _sut.GetCommodityData(input);
@@ -112,21 +103,14 @@ namespace GalaxyQuest.Test
         {
             //Arrange
             const string input = "glob glob silver";
-            var map = new Dictionary<string, string>
-            {
-                {"pish", "X"},
-                {"tegj", "L"},
-                {"glob", "I"},
-                {"prok", "V"}
-            };
-            _numberMapper.GetMap().Returns(map);
+            _numberMapper.GetGalacticToRomanMap().Returns(new Dictionary<string, string>());
             var galacticRoman = new[] {input, "34 credits"};
 
             //Act
             _sut.CalculateCommodityPrice(galacticRoman);
 
             //Assert
-            _numberMapper.Received().SetCommodityPrice(Arg.Any<string>(),Arg.Any<decimal>(),Arg.Any<decimal>());
+            _numberMapper.Received().SetCommodityPrice(Arg.Any<string>(), Arg.Any<decimal>(), Arg.Any<decimal>());
         }
 
         [Fact]
@@ -134,16 +118,9 @@ namespace GalaxyQuest.Test
         {
             //Arrange
             const string input = "glob glob silver";
-            var map = new Dictionary<string, string>
-            {
-                {"pish", "X"},
-                {"tegj", "L"},
-                {"glob", "I"},
-                {"prok", "V"}
-            };
-            _numberMapper.GetMap().Returns(map);
+            _numberMapper.GetGalacticToRomanMap().Returns(new Dictionary<string, string>());
             var galacticRoman = new[] {input, "34k credits"};
-            
+
             //Act
             _sut.CalculateCommodityPrice(galacticRoman);
 

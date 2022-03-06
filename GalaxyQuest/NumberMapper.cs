@@ -7,7 +7,7 @@ namespace GalaxyQuest
         private static readonly Dictionary<string, string> RomanToInterGalacticMap = new();
         private static readonly Dictionary<string, decimal> CommodityPriceMap = new();
 
-        public void Map(string galactic, string roman)
+        public void MapGalacticToRoman(string galactic, string roman)
         {
             if (RomanToInterGalacticMap.ContainsKey(galactic))
             {
@@ -16,7 +16,7 @@ namespace GalaxyQuest
             RomanToInterGalacticMap.Add(galactic, roman.ToUpper());
         }
 
-        public Dictionary<string, string> GetMap()
+        public Dictionary<string, string> GetGalacticToRomanMap()
         {
             return RomanToInterGalacticMap;
         }
