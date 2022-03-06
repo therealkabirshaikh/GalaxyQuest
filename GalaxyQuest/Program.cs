@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
         services.AddSingleton<INumberMapper, NumberMapper>()
-                .AddSingleton<ICurrencyConverter, GalaxyQuestCurrencyConverter>()
+                .AddSingleton<ICurrencyConverter, InterGalacticCurrencyConverter>()
                 .AddSingleton<INoteTaker, NoteTaker>()
                 .AddTransient<IMessageWriter, ConsoleWriter>()
         )

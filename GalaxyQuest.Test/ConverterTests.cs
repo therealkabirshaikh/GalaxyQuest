@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GalaxyQuest.Interfaces;
 using NSubstitute;
 using Xunit;
@@ -7,7 +8,7 @@ namespace GalaxyQuest.Test
 {
     public class ConverterTests
     {
-        private readonly GalaxyQuestCurrencyConverter _sut;
+        private readonly InterGalacticCurrencyConverter _sut;
         private readonly INumberMapper _numberMapper;
         private readonly IMessageWriter _messageWriter;
 
@@ -15,7 +16,7 @@ namespace GalaxyQuest.Test
         {
             _numberMapper = Substitute.For<INumberMapper>();
             _messageWriter = Substitute.For<IMessageWriter>();
-            _sut = new GalaxyQuestCurrencyConverter(_numberMapper, _messageWriter);
+            _sut = new InterGalacticCurrencyConverter(_numberMapper, _messageWriter);
         }
 
         [Fact]
@@ -38,7 +39,7 @@ namespace GalaxyQuest.Test
             Assert.Equal(42, dto.Number);
             Assert.Equal(string.Empty, dto.Message);
         }
-        
+
         [Fact]
         public void CalculateArabicValue_GivenInvalidInput_ReturnsErrorMessage()
         {
@@ -76,10 +77,77 @@ namespace GalaxyQuest.Test
             _numberMapper.GetCommodityPrice("iron").Returns(10);
 
             //Act
-            var dto = _sut.GetCommodityPrice(input);
+            var dto = _sut.GetCommodityData(input);
 
             //Assert
             Assert.Equal(200, dto.Number);
+        }
+
+        [Fact]
+        public void GetCommodityValue_GivenInvalidInput_ReturnsErrorMessage()
+        {
+            //Arrange
+            const string input = "pish posh iron";
+            var map = new Dictionary<string, string>
+            {
+                {"pish", "X"},
+                {"tegj", "L"},
+                {"glob", "I"},
+                {"prok", "V"}
+            };
+            _numberMapper.GetMap().Returns(map);
+            _numberMapper.SetCommodityPrice("iron", 10, 20);
+            _numberMapper.GetCommodityPrice("iron").Returns(10);
+
+            //Act
+            var dto = _sut.GetCommodityData(input);
+
+            //Assert
+            Assert.Equal("I have no idea what you are talking about", dto.Message);
+        }
+
+        [Fact]
+        public void CalculateCommodityPrice_GivenValidInput_ExecutesExpectedMethod()
+        {
+            //Arrange
+            const string input = "glob glob silver";
+            var map = new Dictionary<string, string>
+            {
+                {"pish", "X"},
+                {"tegj", "L"},
+                {"glob", "I"},
+                {"prok", "V"}
+            };
+            _numberMapper.GetMap().Returns(map);
+            var galacticRoman = new[] {input, "34 credits"};
+
+            //Act
+            _sut.CalculateCommodityPrice(galacticRoman);
+
+            //Assert
+            _numberMapper.Received().SetCommodityPrice(Arg.Any<string>(),Arg.Any<decimal>(),Arg.Any<decimal>());
+        }
+
+        [Fact]
+        public void CalculateCommodityPrice_GivenInvalidInput_ExecutesExpectedMethod()
+        {
+            //Arrange
+            const string input = "glob glob silver";
+            var map = new Dictionary<string, string>
+            {
+                {"pish", "X"},
+                {"tegj", "L"},
+                {"glob", "I"},
+                {"prok", "V"}
+            };
+            _numberMapper.GetMap().Returns(map);
+            var galacticRoman = new[] {input, "34k credits"};
+            
+            //Act
+            _sut.CalculateCommodityPrice(galacticRoman);
+
+            //Assert
+            _messageWriter.Received().WriteMessage(Arg.Any<string>());
         }
     }
 }

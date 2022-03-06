@@ -7,6 +7,7 @@ namespace GalaxyQuest
         private readonly ICurrencyConverter _currencyConverter;
         private readonly INumberMapper _numberMapper;
         private readonly IMessageWriter _messageWriter;
+        private bool Terminate { get; set; }
 
         public NoteTaker(ICurrencyConverter currencyConverter, INumberMapper numberMapper, IMessageWriter messageWriter)
         {
@@ -19,60 +20,79 @@ namespace GalaxyQuest
         {
             _messageWriter.WriteMessage("Enter notes...");
             
-            while (true)
+            while (!Terminate)
             {
-                var userInput = Console.ReadLine();
-                if (userInput.Equals("exit", StringComparison.OrdinalIgnoreCase))
-                    Environment.Exit(0);
-
-                var startIndex = userInput.LastIndexOf('?');
-                if (startIndex != -1)
+                var input = Console.ReadLine();
+                if (input != null && input.Trim().Equals("exit", StringComparison.OrdinalIgnoreCase))
                 {
-                    userInput = userInput.Remove(startIndex);
+                    Terminate = true;
+                    continue;
                 }
+                var userInput = GetUserInput(input);
+                ProcessUserInput(userInput);
+            }
+            Environment.Exit(0);
+        }
 
-                userInput = userInput.Trim();
+        private static string? GetUserInput(string? userInput)
+        {
+            if (userInput == null) 
+                return userInput;
+            
+            var startIndex = userInput.LastIndexOf('?');
+            if (startIndex != -1)
+            {
+                userInput = userInput.Remove(startIndex);
+            }
+            
+            userInput = userInput.Trim();
 
-                if (userInput.Contains(" is ", StringComparison.OrdinalIgnoreCase))
+            return userInput;
+        }
+
+        public void ProcessUserInput(string? userInput)
+        {
+            if (userInput != null && userInput.Contains(" is ", StringComparison.OrdinalIgnoreCase))
+            {
+                var userInputArray = userInput.Split(" is ");
+                var questionText = userInputArray[0];
+                var commodityData = userInputArray[1];
+                if (questionText.Equals("how much", StringComparison.OrdinalIgnoreCase))
                 {
-                    var userInputArray = userInput.Split(" is ");
-                    if (userInputArray[0].Equals("how much", StringComparison.OrdinalIgnoreCase))
+                    var commodityObject = _currencyConverter.CalculateArabicValue(commodityData);
+                    if (commodityObject.Message != string.Empty)
                     {
-                        var arabicNumber = _currencyConverter.CalculateArabicValue(userInputArray[1]);
-                        if (arabicNumber.Message != string.Empty)
-                        {
-                            _messageWriter.WriteMessage(arabicNumber.Message);
-                        }
-                        else
-                        {
-                            _messageWriter.WriteMessage(arabicNumber.Number >= 0
-                                ? $"{userInputArray[1]} is {arabicNumber.Number}"
-                                : $"{userInputArray[1]} is an invalid value");
-                        }
-                    }
-                    else if (userInputArray[0].StartsWith("how many", StringComparison.OrdinalIgnoreCase))
-                    {
-                        var commodity = _currencyConverter.GetCommodityPrice(userInputArray[1]);
-                        _messageWriter.WriteMessage(commodity.Number >= 0
-                            ? $"{userInputArray[1]} is {commodity.Number} Credits"
-                            : $"{userInputArray[1]} is an invalid value");
+                        _messageWriter.WriteMessage(commodityObject.Message);
                     }
                     else
                     {
-                        if (userInputArray[1].EndsWith("credits", StringComparison.OrdinalIgnoreCase))
-                        {
-                            _currencyConverter.CalculateCommodityPrice(userInputArray);
-                        }
-                        else
-                        {
-                            _numberMapper.Map(userInputArray[0], userInputArray[1]);
-                        }
+                        _messageWriter.WriteMessage(commodityObject.Number >= 0
+                            ? $"{commodityData} is {commodityObject.Number}"
+                            : $"{commodityData} is an invalid value");
                     }
+                }
+                else if (questionText.StartsWith("how many", StringComparison.OrdinalIgnoreCase))
+                {
+                    var commodity = _currencyConverter.GetCommodityData(commodityData);
+                    _messageWriter.WriteMessage(commodity.Number >= 0
+                        ? $"{commodityData} is {commodity.Number} Credits"
+                        : $"{commodityData} is an invalid value");
                 }
                 else
                 {
-                    _messageWriter.WriteMessage("I have no idea what you are talking about");
+                    if (commodityData.EndsWith("credits", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _currencyConverter.CalculateCommodityPrice(userInputArray);
+                    }
+                    else
+                    {
+                        _numberMapper.Map(questionText, commodityData);
+                    }
                 }
+            }
+            else
+            {
+                _messageWriter.WriteMessage("I have no idea what you are talking about");
             }
         }
     }

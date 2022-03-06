@@ -21,9 +21,9 @@ namespace GalaxyQuest
             return RomanToInterGalacticMap;
         }
 
-        public void SetCommodityPrice(string commodity, decimal arabicValue, decimal totalValue)
+        public void SetCommodityPrice(string commodity, decimal quantity, decimal totalValue)
         {
-            var commodityPrice = totalValue / arabicValue;
+            var commodityPrice = totalValue / quantity;
             if (CommodityPriceMap.ContainsKey(commodity))
             {
                 CommodityPriceMap.Remove(commodity);
