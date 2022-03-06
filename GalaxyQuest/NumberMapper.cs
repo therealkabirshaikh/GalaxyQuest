@@ -2,22 +2,22 @@
 
 namespace GalaxyQuest
 {
-    public static class RomanToGalacticMapper
+    public class NumberMapper : INumberMapper
     {
         private static readonly Dictionary<string, string> RomanToInterGalacticMap = new();
         private static readonly Dictionary<string, decimal> CommodityPriceMap = new();
 
-        public static void Map(string galactic, string roman)
+        public void Map(string galactic, string roman)
         {
             RomanToInterGalacticMap.Add(galactic, roman.ToUpper());
         }
 
-        public static Dictionary<string, string> GetMap()
+        public Dictionary<string, string> GetMap()
         {
             return RomanToInterGalacticMap;
         }
 
-        public static void SetCommodityPrice(decimal arabicValue, string galactic, decimal totalValue)
+        public void SetCommodityPrice(decimal arabicValue, string galactic, decimal totalValue)
         {
             var commodityPrice = totalValue / arabicValue;
             if (CommodityPriceMap.ContainsKey(galactic))
@@ -28,7 +28,7 @@ namespace GalaxyQuest
             CommodityPriceMap.Add(galactic, commodityPrice);
         }
 
-        public static decimal GetCommodityValue(string commodityName)
+        public decimal GetCommodityValue(string commodityName)
         {
             CommodityPriceMap.TryGetValue(commodityName, out var value);
             return value;

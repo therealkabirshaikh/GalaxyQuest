@@ -2,9 +2,12 @@
 
 namespace GalaxyQuest
 {
-    internal class NoteTaker
+    public class NoteTaker
     {
-        public static void GalaxyQuestNotes()
+        private ICurrencyConverter _currencyConverter = new GalaxyQuestCurrencyConverter();
+        private readonly INumberMapper _numberMapper = new NumberMapper(); //TODO: Inject this
+       
+        public void GalaxyQuestNotes()
         {
             var userInput = string.Empty;
             Console.WriteLine("Enter notes...");
@@ -27,7 +30,7 @@ namespace GalaxyQuest
                     var userInputArray = userInput.Split(" is ");
                     if (userInputArray[0].Equals("how much", StringComparison.OrdinalIgnoreCase))
                     {
-                        var arabicNumber = GalaxyQuestCurrencyConverter.CalculateArabicValue(userInputArray);
+                        var arabicNumber = GalaxyQuestCurrencyConverter.CalculateArabicValue(userInputArray[1]);
                         if (arabicNumber.Message != string.Empty)
                         {
                             Console.WriteLine(arabicNumber.Message);
@@ -41,7 +44,7 @@ namespace GalaxyQuest
                     }
                     else if (userInputArray[0].StartsWith("how many", StringComparison.OrdinalIgnoreCase))
                     {
-                        var commodity = GalaxyQuestCurrencyConverter.GetCommodityValue(userInputArray);
+                        var commodity = _currencyConverter.GetCommodityValue(userInputArray);
                         Console.WriteLine(commodity.Number >= 0
                             ? $"{userInputArray[1]} is {commodity.Number} Credits"
                             : $"{userInputArray[1]} is an invalid value");
@@ -50,11 +53,11 @@ namespace GalaxyQuest
                     {
                         if (userInputArray[1].EndsWith("credits", StringComparison.OrdinalIgnoreCase))
                         {
-                            GalaxyQuestCurrencyConverter.CalculateCommodityPrice(userInputArray);
+                            _currencyConverter.CalculateCommodityPrice(userInputArray);
                         }
                         else
                         {
-                            RomanToGalacticMapper.Map(userInputArray[0], userInputArray[1]);
+                            _numberMapper.Map(userInputArray[0], userInputArray[1]);
                         }
                     }
                 }

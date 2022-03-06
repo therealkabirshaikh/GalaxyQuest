@@ -5,18 +5,23 @@ using GalaxyQuest.Models;
 
 namespace GalaxyQuest
 {
-    public class GalaxyQuestCurrencyConverter
+    public class GalaxyQuestCurrencyConverter : ICurrencyConverter
     {
-        public static ArabicNumber CalculateArabicValue(IReadOnlyList<string> inputArray)
+        private readonly INumberMapper _numberMapper = new NumberMapper(); //TODO: Inject this
+        
+        public static ReturnDTO CalculateArabicValue(string input)
         {
             var localRoman = string.Empty;
             var message = string.Empty;
-            var galacticNames = inputArray[1].Split(' ');
+            var galacticNames = input.Split(' ');
+            
             foreach (var name in galacticNames)
             {
                 if (name.Equals(string.Empty))
                     continue;
-                Dictionary<string, string> map = RomanToGalacticMapper.GetMap();
+
+                var numberMapper = new NumberMapper();
+                Dictionary<string, string> map = numberMapper.GetMap();
 
                 if (map.TryGetValue(name, out _))
                     localRoman += map[name];
@@ -28,22 +33,23 @@ namespace GalaxyQuest
 
             var convertedValue = RomanArabicConverter.ToArabicNumber(localRoman);
 
-            return new ArabicNumber {Message = message, Number = convertedValue};
+            return new ReturnDTO {Message = message, Number = convertedValue};
         }
 
-        public static Commodity GetCommodityValue(IReadOnlyList<string> inputArray)
+        public ReturnDTO GetCommodityValue(IReadOnlyList<string> inputArray)
         {
             var localRoman = string.Empty;
             var message = string.Empty;
             var galacticValueAndCommodity = inputArray[1].Split(' ');
             var commodity = galacticValueAndCommodity.TakeLast(1).First();
             Array.Resize(ref galacticValueAndCommodity, galacticValueAndCommodity.Length - 1);
+            
             foreach (var name in galacticValueAndCommodity)
             {
                 if (name.Equals(string.Empty))
                     continue;
-
-                Dictionary<string, string> map = RomanToGalacticMapper.GetMap();
+                
+                var map = _numberMapper.GetMap();
                 if (map.TryGetValue(name, out _))
                     localRoman += map[name];
                 else
@@ -53,20 +59,20 @@ namespace GalaxyQuest
             }
 
             var convertedValue = RomanArabicConverter.ToArabicNumber(localRoman);
-            var commodityValue = RomanToGalacticMapper.GetCommodityValue(commodity);
+            var commodityValue = _numberMapper.GetCommodityValue(commodity);
             var totalValue = commodityValue * convertedValue;
 
-            return new Commodity {Number = totalValue, Message = message};
+            return new ReturnDTO {Number = totalValue, Message = message};
         }
 
-        public static void CalculateCommodityPrice(IReadOnlyList<string> galacticRoman)
+        public void CalculateCommodityPrice(IReadOnlyList<string> galacticRoman)
         {
             var localRoman = string.Empty;
             var numberOfCredits = galacticRoman[1].Split(' ');
             var galacticNames = galacticRoman[0].Split(' ');
             foreach (var name in galacticNames)
             {
-                Dictionary<string, string> map = RomanToGalacticMapper.GetMap();
+                Dictionary<string, string> map = _numberMapper.GetMap();
                 if (map.ContainsKey(name))
                 {
                     localRoman += map[name];
@@ -86,9 +92,9 @@ namespace GalaxyQuest
             }
         }
 
-        private static void SetCommodityPrice(decimal convertedValue, string g, decimal totalValue)
+        private void SetCommodityPrice(decimal convertedValue, string g, decimal totalValue)
         {
-            RomanToGalacticMapper.SetCommodityPrice(convertedValue, g, totalValue);
+            _numberMapper.SetCommodityPrice(convertedValue, g, totalValue);
         }
     }
 }
