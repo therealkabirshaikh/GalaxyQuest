@@ -89,4 +89,20 @@ public class NoteTakerTests
         _currencyConverter.Received().CalculateArabicValue(Arg.Any<string>());
         _messageWriter.Received().WriteMessage(Arg.Any<string>());
     }
+
+    [Fact]
+    public void ProcessUserInput_WithInvalidInput_CallsWriteMessage()
+    {
+        //Arrange
+        const string input = "how much is pish tegj glob glob";
+        _currencyConverter.CalculateArabicValue(Arg.Any<string>())
+            .Returns(new ReturnDTO { Number = 10, Message = "Invalid value..." });
+
+        //Act
+        _sut.ProcessUserInput(input);
+
+        //Assert
+        _currencyConverter.Received().CalculateArabicValue(Arg.Any<string>());
+        _messageWriter.Received().WriteMessage(Arg.Any<string>());
+    }
 }
