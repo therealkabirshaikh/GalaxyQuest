@@ -4,32 +4,33 @@ namespace GalaxyQuest
 {
     public static class RomanToGalacticMapper
     {
-        private static Dictionary<string, string> romanToInterGalacticMap = new();
-        private static Dictionary<string, decimal> commodityPriceMap = new();
+        private static readonly Dictionary<string, string> RomanToInterGalacticMap = new();
+        private static readonly Dictionary<string, decimal> CommodityPriceMap = new();
 
         public static void Map(string galactic, string roman)
         {
-            romanToInterGalacticMap.Add(galactic, roman.ToUpper());
+            RomanToInterGalacticMap.Add(galactic, roman.ToUpper());
         }
 
-        public static Dictionary<string,string> GetMap()
+        public static Dictionary<string, string> GetMap()
         {
-            return romanToInterGalacticMap;
+            return RomanToInterGalacticMap;
         }
 
         public static void SetCommodityPrice(decimal arabicValue, string galactic, decimal totalValue)
         {
             var commodityPrice = totalValue / arabicValue;
-            if(commodityPriceMap.ContainsKey(galactic))
+            if (CommodityPriceMap.ContainsKey(galactic))
             {
-                commodityPriceMap.Remove(galactic);
+                CommodityPriceMap.Remove(galactic);
             }
-            commodityPriceMap.Add(galactic, commodityPrice);
+
+            CommodityPriceMap.Add(galactic, commodityPrice);
         }
 
         public static decimal GetCommodityValue(string commodityName)
         {
-            commodityPriceMap.TryGetValue(commodityName, out var value);
+            CommodityPriceMap.TryGetValue(commodityName, out var value);
             return value;
         }
     }
