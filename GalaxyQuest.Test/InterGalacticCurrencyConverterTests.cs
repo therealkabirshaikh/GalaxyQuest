@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GalaxyQuest.Converters;
 using GalaxyQuest.Interfaces;
 using NSubstitute;
@@ -58,7 +57,7 @@ namespace GalaxyQuest.Test
             var dto = _sut.CalculateArabicValue(input);
 
             //Assert
-            Assert.Equal("I have no idea what you are talking about", dto.Message);
+            Assert.Equal(Constants.ErrorMessage, dto.Message);
         }
 
         [Fact]
@@ -95,7 +94,7 @@ namespace GalaxyQuest.Test
             var dto = _sut.GetCommodityData(input);
 
             //Assert
-            Assert.Equal("I have no idea what you are talking about", dto.Message);
+            Assert.Equal(Constants.ErrorMessage, dto.Message);
         }
 
         [Fact]

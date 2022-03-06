@@ -67,7 +67,7 @@ namespace GalaxyQuest
             }
             else
             {
-                _messageWriter.WriteMessage("I have no idea what you are talking about");
+                _messageWriter.WriteMessage(Constants.ErrorMessage);
             }
         }
     }

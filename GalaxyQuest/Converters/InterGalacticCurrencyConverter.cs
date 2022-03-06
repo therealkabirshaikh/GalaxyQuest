@@ -31,7 +31,7 @@ namespace GalaxyQuest.Converters
                     localRoman += map[name];
                 else
                 {
-                    message = "I have no idea what you are talking about";
+                    message = Constants.ErrorMessage;
                 }
             }
 
@@ -58,7 +58,7 @@ namespace GalaxyQuest.Converters
                     localRoman += map[name];
                 else
                 {
-                    message = "I have no idea what you are talking about";
+                    message = Constants.ErrorMessage;
                 }
             }
 
@@ -89,7 +89,7 @@ namespace GalaxyQuest.Converters
                         _numberMapper.SetCommodityPrice(galacticNames.Last(),convertedValue, totalValue);
                     else
                     {
-                        _messageWriter.WriteMessage("I have no idea what you are talking about");
+                        _messageWriter.WriteMessage(Constants.ErrorMessage);
                     }
                 }
             }
