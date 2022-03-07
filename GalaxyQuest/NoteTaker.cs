@@ -19,7 +19,7 @@ namespace GalaxyQuest
         public void GalaxyQuestNotes()
         {
             _messageWriter.WriteMessage("Enter notes...");
-            
+
             while (!Terminate)
             {
                 var input = Console.ReadLine();
@@ -28,9 +28,11 @@ namespace GalaxyQuest
                     Terminate = true;
                     continue;
                 }
+
                 var userInput = UserInputValidator.GetUserInput(input);
                 ProcessUserInput(userInput);
             }
+
             Environment.Exit(0);
         }
 
@@ -61,7 +63,8 @@ namespace GalaxyQuest
                     }
                     else
                     {
-                        _numberMapper.MapGalacticToRoman(questionText, commodityData);
+                        if (!_numberMapper.MapGalacticToRoman(questionText, commodityData))
+                            _messageWriter.WriteMessage(Constants.ErrorMessage);
                     }
                 }
             }

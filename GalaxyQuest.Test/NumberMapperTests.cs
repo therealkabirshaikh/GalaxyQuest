@@ -46,15 +46,33 @@ public class NumberMapperTests
     {
         //Arrange
         const string galactic = "glob";
-        const string roman = "I";
+        const string roman = "i";
 
         //Act
-        _sut.MapGalacticToRoman(galactic, roman);
+        var added = _sut.MapGalacticToRoman(galactic, roman);
         var map = _sut.GetGalacticToRomanMap();
         var value = map["glob"];
 
         //Assert
+        Assert.True(added);
         Assert.Equal(roman, value);
+    }
+    
+    [Fact]
+    public void MapGalacticToRoman_WhenCalledWithInvalidRomanNumeral_ReturnsFalse()
+    {
+        //Arrange
+        const string galactic = "glob";
+        const string roman = "W";
+
+        //Act
+        var added = _sut.MapGalacticToRoman(galactic, roman);
+        var map = _sut.GetGalacticToRomanMap();
+        var found =  map.TryGetValue("glob", out var value);
+
+        //Assert
+        Assert.False(added);
+        Assert.False(found);
     }
     
     [Fact]
@@ -62,15 +80,16 @@ public class NumberMapperTests
     {
         //Arrange
         const string galactic = "glob";
-        const string roman = "I";
+        const string roman = "i";
 
         //Act
-        _sut.MapGalacticToRoman(galactic, roman);
-        _sut.MapGalacticToRoman(galactic, "X");
+        var added = _sut.MapGalacticToRoman(galactic, roman);
+        added = _sut.MapGalacticToRoman(galactic, "x");
         var map = _sut.GetGalacticToRomanMap();
         var value = map["glob"];
 
         //Assert
-        Assert.Equal("X", value);
+        Assert.True(added);
+        Assert.Equal("x", value);
     }
 }
