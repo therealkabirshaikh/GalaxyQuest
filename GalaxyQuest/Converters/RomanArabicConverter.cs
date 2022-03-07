@@ -56,8 +56,8 @@ namespace GalaxyQuest.Converters
 
         public static decimal ToArabicNumber(string roman)
         {
-            const string pattern = @"^(?=[MDCLXVI])M*(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$";
-            var regex = new Regex(pattern);
+            roman = roman.ToUpper();
+            var regex = new Regex(Constants.RomanNumeralPattern);
             if (!regex.IsMatch(roman))
                 return -1;
 

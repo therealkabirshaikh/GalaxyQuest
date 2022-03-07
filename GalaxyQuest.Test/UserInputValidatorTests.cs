@@ -14,7 +14,7 @@ public class UserInputValidatorTests
         var actual = UserInputValidator.GetUserInput(input);
         
         //Assert
-        Assert.Equal(input, actual);
+        Assert.Equal("glob is i", actual);
     }
     
     [Fact]

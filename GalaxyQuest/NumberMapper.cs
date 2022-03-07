@@ -12,11 +12,13 @@ namespace GalaxyQuest
             var validRomanChars = new[] {"i", "v", "x", "l", "c", "d", "m"};
             if (!validRomanChars.Contains(roman)) 
                 return false;
+            
             if (RomanToInterGalacticMap.ContainsKey(galactic))
             {
                 RomanToInterGalacticMap.Remove(galactic);
             }
             RomanToInterGalacticMap.Add(galactic, roman);
+            
             return true;
         }
 
