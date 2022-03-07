@@ -9,7 +9,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<INumberMapper, NumberMapper>()
                 .AddSingleton<ICurrencyConverter, InterGalacticCurrencyConverter>()
                 .AddSingleton<INoteTaker, NoteTaker>()
-                .AddTransient<IMessageWriter, ConsoleWriter>()
+                .AddSingleton<IMessageWriter, ConsoleWriter>()
         )
     .Build();
 
