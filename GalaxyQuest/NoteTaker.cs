@@ -18,7 +18,7 @@ namespace GalaxyQuest
 
         public void GalaxyQuestNotes()
         {
-            _messageWriter.WriteMessage("Enter notes...");
+            _messageWriter.WriteMessage("Welcome to Galaxy Quest!");
 
             while (!Terminate)
             {
