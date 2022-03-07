@@ -13,7 +13,7 @@ This application is built on .Net 6, so install it if necessary (link below).
    1. Open the solution in Visual Studio 2022 or JetBrains Rider
    2. In Visual Studio 2022, Click on Debug --> Start Debugging or Start Without Debugging
 2. Alternatively, you can compile and run from the command line
-   1. In a terminal window, navigate to the folder that contains the GalaxyQuest.csproj file
+   1. In a terminal window, navigate to the folder that contains the **GalaxyQuest.csproj** file
    2. Type `dotnet run` and press Enter
 
 ## User Manual
