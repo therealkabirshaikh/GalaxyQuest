@@ -36,6 +36,8 @@ namespace GalaxyQuest.Converters
             }
 
             var convertedValue = RomanArabicConverter.ToArabicNumber(localRoman);
+            if (convertedValue == -1) 
+                message = Constants.ErrorMessage;
 
             return new ReturnDTO {Message = message, Number = convertedValue};
         }
@@ -64,6 +66,9 @@ namespace GalaxyQuest.Converters
 
             var commodityQuantity = RomanArabicConverter.ToArabicNumber(localRoman);
             var commodityValue = _numberMapper.GetCommodityPrice(commodity);
+            if (commodityValue == -1)
+                message = Constants.ErrorMessage;
+            
             var totalValue = commodityValue * commodityQuantity;
 
             return new ReturnDTO {Number = totalValue, Message = message};

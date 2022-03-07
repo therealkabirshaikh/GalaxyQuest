@@ -53,7 +53,9 @@ namespace GalaxyQuest
                 else if (questionText.StartsWith("how many", StringComparison.OrdinalIgnoreCase))
                 {
                     var commodity = _currencyConverter.GetCommodityData(commodityData);
-                    _messageWriter.WriteMessage($"{commodityData} is {commodity.Number} Credits");
+                    _messageWriter.WriteMessage(commodity.Message != string.Empty
+                        ? commodity.Message
+                        : $"{commodityData} is {commodity.Number} Credits");
                 }
                 else
                 {
