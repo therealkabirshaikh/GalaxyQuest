@@ -48,4 +48,5 @@ I have no idea what you are talking about
 
 ## Notes/Assumptions
 - Input is not case-sensitive
+- Question marks at the end of the sentence are optional
 - Any invalid or unrecognized input will return the message "**I have no idea what you are talking about**"
